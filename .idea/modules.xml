@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/CarSearch.iml" filepath="$PROJECT_DIR$/.idea/CarSearch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebFreePark/.idea/WebFreePark.iml" filepath="$PROJECT_DIR$/../WebFreePark/.idea/WebFreePark.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebParkSearch/.idea/WebParkSearch.iml" filepath="$PROJECT_DIR$/../WebParkSearch/.idea/WebParkSearch.iml" />
+    </modules>
+  </component>
+</project>

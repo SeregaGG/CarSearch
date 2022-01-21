@@ -1,7 +1,7 @@
 from imageai.Detection import ObjectDetection
 import os
 import requests
-
+from Camera import Cam
 
 execution_path = os.getcwd()
 
@@ -11,34 +11,17 @@ detector.setModelPath(os.path.join(execution_path, "yolo.h5"))
 detector.loadModel()
 custom_objects = detector.CustomObjects(car=True, motorcycle=True)
 
-IP = '89.108.88.254'
-totalParks = len(requests.get(f'http://{IP}/api/v1/parkings').json())
-print(totalParks)
-park_id = 1
+image_name = 'park'
+frame_name = 'lastframe'
 
-while(True):
+current_cam = Cam('http://ekb.holme.ru/webcam/5a592fcbc7d6045057b2ede4/')
 
-    response = requests.get(f'http://{IP}/api/v1/parkings/{park_id}')
-    json_response = response.json()
-    pictureUrl = json_response['camera']
-    p = requests.get(f'http://{IP}/api/v1/parkings/{park_id}/camera')
-    out = open("park.jpg", "wb")
-    out.write(p.content)
-    out.close()
-    temp_percentage = 10
+temp_percentage = 10
+while (True):
 
-
-    detections = detector.detectObjectsFromImage(custom_objects=custom_objects, input_image=os.path.join(execution_path, "park.jpg"),
+    current_cam.WriteImage(image_name, frame_name)
+    detections = detector.detectObjectsFromImage(custom_objects=custom_objects,
+                                                 input_image=os.path.join(execution_path, image_name + ".jpg"),
                                                  output_image_path=os.path.join(execution_path, "image2new.jpg"),
                                                  minimum_percentage_probability=temp_percentage)
-    freeSpaces = json_response['totalParkingSpaces'] - len(detections)
-    print(freeSpaces)
-    if freeSpaces != json_response['freeParkingSpaces']:
-        if freeSpaces < 0:
-            freeSpaces = 0
-        requests.post(f'http://{IP}/api/v1/parkings/{park_id}/update', json={"Value": freeSpaces})
-        #requests.post(f'http://{IP}/api/v1/parkings/{park_id}/update', json={"freeParkingSpaces": freeSpaces})
-    park_id = park_id + 1
-    if park_id > totalParks:
-        park_id = 1
-
+    print(len(detections))
